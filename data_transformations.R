@@ -7,10 +7,10 @@ library(plotly)
 
 # get data every day
 fileURL_bund <- "https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Bundeslaender_COVID-19-Impfungen.csv"
-fileURL_land <- "https://raw.githubusercontent.com/josephine-doerre/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv"
+fileURL_land <- "https://raw.githubusercontent.com/robert-koch-institut/COVID-19-Impfungen_in_Deutschland/master/Aktuell_Deutschland_Landkreise_COVID-19-Impfungen.csv"
 
 # seperate list of states in germany
-landkreise_id <- read.csv(".../landkreis.csv", sep = ";")
+landkreise_id <- read.csv("landkreis.csv", sep = ";")
 
 data_bund <-  read.csv(fileURL_bund)
 data_landkreis <- read.csv(fileURL_land)
@@ -23,7 +23,7 @@ data_landkreis <- left_join(data_landkreis,landkreise_id , by = "landkreis_ID")
 data_compl <- data_landkreis[complete.cases(data_landkreis), ]
 data_compl$Impfdatum <- ymd(data_compl$Impfdatum)
 
-# calcule the counts per day per and age group
+# calculate the counts per day per and age group
 data_age <- data_compl %>%
     select(-landkreis_ID,-kreis) %>%
     group_by(Impfdatum,Altersgruppe) %>%
@@ -67,3 +67,4 @@ data_bund$Impfdatum <- ymd(data_bund$Impfdatum)
 # save the transformed data files 
 save(data_age, file= "federalstate.rda")
 save(data_bund, file="vaccinetype_state.rda")
+
